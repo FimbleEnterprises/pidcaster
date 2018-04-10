@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.fimbleenterprises.torquebroadcaster"
+          android:versionCode="15"
+          android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="5"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name=".MyApp"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Base.Theme.AppCompat">
+
+
+        <activity
+            android:name=".PluginActivity"
+            android:alwaysRetainTaskState="true"
+            android:clearTaskOnLaunch="true"
+            android:exported="true"
+            android:finishOnTaskLaunch="false"
+            android:noHistory="false"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="org.prowl.torque.ACTIVITY_PLUGIN"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".MyPidMonitorService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
+        <receiver android:name=".MyInternalReceiver">
+            <intent-filter>
+                <action android:name="com.fimbleenterprises.torquebroadcaster.local_broadcast"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".MyTorqueIsQuittingReceiver">
+            <intent-filter>
+                <action android:name="org.prowl.torque.APP_QUITTING"/>
+            </intent-filter>
+
+        </receiver>
+
+        <receiver android:name=".MyTorqueIsStartingReceiver">
+            <intent-filter>
+                <action android:name="org.prowl.torque.APP_LAUNCHED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.prowl.torque.OBD_CONNECTED"/>
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings">
+        </activity>
+
+        <activity
+            android:name=".SelectMonitorPidsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_select_monitor_pids"
+            android:parentActivityName=".PluginActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fimbleenterprises.torquebroadcaster.PluginActivity"/>
+        </activity>
+        <activity
+            android:name=".PreferencesActivity"
+            android:label="@string/title_activity_preferences"
+            android:theme="@style/PreferenceScreen"
+            android:parentActivityName=".PluginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fimbleenterprises.torquebroadcaster.PluginActivity"/>
+        </activity>
+        <activity android:name=".NotificationReceiverActivity" android:label="Notification STOP Clicked"/>
+
+    </application>
+
+</manifest>

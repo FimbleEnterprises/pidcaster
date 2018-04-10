@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.fimbleenterprises.torquebroadcaster.PluginActivity"
+                android:background="#000000" android:padding="10dp">
+
+    <TextView
+        android:text="Service Status: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_ECU_status"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/textView_serviceStatus" android:textColor="@android:color/holo_red_light"
+    />
+    <TextView
+        android:text="Engine monitor last value: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewPIDlastUpdated"
+        android:id="@+id/textView_EngineLoadValue"
+        android:visibility="gone"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:text="Engine monitor PID Name:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/textViewPidBeingMonitored"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:text="ECU Connectivity:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_ECU_status"
+        android:layout_below="@+id/textView_EngineLoadValue"
+        android:layout_alignParentLeft="true" android:textColor="@android:color/holo_red_light"/>
+    <TextView
+        android:text="Engine monitor Last updated: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@+id/textViewPidBeingMonitored"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/textViewPIDlastUpdated"/>
+
+    <Button
+        android:text="Please wait..."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonDisconnect"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" android:background="@drawable/btn_glass_gray"
+        android:layout_marginTop="15dp" android:textColor="#E2BD00"
+        android:padding="10dp" android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:text="Settings..."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonPrefs"
+        android:layout_above="@+id/buttonDisconnect"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" android:visibility="gone"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Log:"
+        android:maxLines="150"
+        android:id="@+id/textView"
+        android:layout_below="@+id/textView_serviceStatus"
+        android:layout_alignParentLeft="true" android:textColor="#FFFFFF"
+        android:visibility="gone"/>
+    <ScrollView
+        android:id="@+id/SCROLLER_ID"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:layout_above="@+id/buttonPrefs"
+        android:layout_alignParentLeft="true"
+        android:focusable="false" android:focusableInTouchMode="true"
+        android:background="@drawable/yellow_square_border" android:padding="10dp"
+        android:layout_below="@+id/textView_serviceStatus" android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/TEXT_LOG"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:ellipsize="start"
+            android:longClickable="true"
+            android:textIsSelectable="true"
+            android:cursorVisible="false" android:editable="false"
+            android:fadeScrollbars="false" android:enabled="true"
+            android:inputType="none" android:contextClickable="false" android:focusable="true"
+            android:textSize="10sp"/>
+
+    </ScrollView>
+    <ToggleButton
+        android:text="ToggleButton"
+        android:id="@+id/toggleButtonAutoScroll"
+        android:padding="10dp"
+        android:textColor="#E2BD00"
+        android:textOn="LOGGING ON" android:textOff="LOGGING PAUSED"
+        android:layout_below="@+id/textView_serviceStatus" android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:background="@drawable/btn_glass_gray"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" app:srcCompat="@drawable/broadcast_indicator3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" android:id="@+id/imageViewSending"
+        android:layout_above="@+id/SCROLLER_ID"
+        android:visibility="visible"
+        android:layout_below="@+id/textView_EngineLoadValue" android:scaleType="fitCenter"/>
+
+</RelativeLayout>

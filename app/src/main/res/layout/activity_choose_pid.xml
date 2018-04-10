@@ -1,0 +1,47 @@
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context="com.fimbleenterprises.torquebroadcaster.deprecatedChoosePidActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+        <TextView
+            android:text="Choose PIDs to Broadcast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView_TitleText"
+            android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:layout_marginTop="5dp"/>
+
+        <RelativeLayout android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_below="@+id/textView_TitleText">
+
+            <FrameLayout   android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:fitsSystemWindows="true">
+                <LinearLayout android:id="@+id/fullscreen_content_controls"
+                              style="?metaButtonBarStyle"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_gravity="bottom|center_horizontal"
+                              android:background="@color/black_overlay"
+                              android:orientation="horizontal"
+                              tools:ignore="UselessParent">
+                </LinearLayout>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@android:id/list" android:padding="2dp"
+                    android:layout_marginTop="5dp"/>
+            </FrameLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>

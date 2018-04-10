@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Broadcast Frequency"
+                        android:layout="@layout/my_preference_category">
+
+        <ListPreference
+            android:key="@string/PREF_KEY_FREQUENCY"
+            android:title="@string/pref_title_change_broadcast_interval"
+            android:summary="@string/pref_description_broadcast_interval"
+            android:entries="@array/pref_broadcast_interval_captions"
+            android:entryValues="@array/pref_broadcast_interval_values">
+        </ListPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="PIDs to Monitor"
+        android:layout="@layout/my_preference_category">
+        <Preference
+            android:key="@string/PREF_CHOOSE_PIDS"
+            android:title="@string/pref_title_modify_intents"
+            android:summary="@string/pref_description_modify_intents">
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Static Broadcast Intents"
+        android:layout="@layout/my_preference_category">
+
+        <EditTextPreference
+            android:key="PREF_KEY_ECU_CONNECTED_INTENT_VALUE"
+            android:defaultValue="com.fimbleenterprises.torquebroadcast.ECU_CONNECTED"
+            android:title="@string/pref_title_ecu_connected"
+            android:summary="@string/pref_summary_ecu_connected">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:key="PREF_KEY_ECU_DISCONNECTED_INTENT_VALUE"
+            android:defaultValue="com.fimbleenterprises.torquebroadcast.ECU_DISCONNECTED"
+            android:title="@string/pref_title_ecu_disconnected"
+            android:summary="@string/pref_summary_ecu_disconnected">
+        </EditTextPreference>
+<!--
+         <Preference
+             android:key="@string/PREF_SET_EASY_DEFAULTS"
+             android:title="@string/pref_title_set_default_intents_easy"
+             android:summary="@string/pref_description_default_intents_easy">
+        </Preference>
+
+        <Preference
+            android:key="@string/PREF_SET_SAFE_DEFAULTS"
+            android:title="@string/pref_title_set_default_intents_safe"
+            android:summary="@string/pref_description_default_intents_safe">
+        </Preference>
+-->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Other"
+                        android:layout="@layout/my_preference_category">
+<!--
+        <ListPreference
+            android:key="@string/PREF_KEY_ENGINE_OFF_DELAY"
+            android:title="@string/pref_title_change_reset_data_interval"
+            android:summary="@string/pref_description_change_reset_data_interval"
+            android:entries="@array/pref_engine_off_delay_captions"
+            android:entryValues="@array/pref_engine_off_delay_values">
+        </ListPreference>
+-->
+
+        <CheckBoxPreference
+            android:key="PREF_KEY_USE_METRIC"
+            android:title="Use metric system"
+            android:summaryOff="Values are being converted to imperial"
+            android:summaryOn="Values are currently using the metric system">
+        </CheckBoxPreference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
