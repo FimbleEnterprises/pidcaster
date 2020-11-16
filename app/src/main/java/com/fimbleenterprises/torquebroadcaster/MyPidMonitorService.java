@@ -40,6 +40,8 @@ import static com.fimbleenterprises.torquebroadcaster.MyInternalReceiver.EXTRA_K
 
 public class MyPidMonitorService extends Service {
     public static final String TAG = "MainActivity";
+    public static final String TORQUE_PACKAGE_NAME = "org.prowl.torque";
+    public static final String TORQUE_CLASS_NAME = "org.prowl.torque.remote.TorqueService";
     public static final String SERVICE_IS_ON_TEXT = "PID Broadcaster: Sending broadcasts";
     public static final String SERVICE_IS_OFF_TEXT = "PID Broadcaster: Not broadcasting";
     public static final String ECU_CONNECTED = "Connected to ECU: Yup";
@@ -222,7 +224,7 @@ public class MyPidMonitorService extends Service {
             // Bind to the torque service
             boolean successfulBind = false;
             Intent intent = new Intent();
-            intent.setClassName("org.prowl.torque", "org.prowl.torque.remote.TorqueService");
+            intent.setClassName(TORQUE_PACKAGE_NAME, TORQUE_CLASS_NAME);
             try {
                 Log.e(TAG, "bindToTorqueService:isBound=" + isBound);
                 successfulBind = bindService(intent, connection, 0);
@@ -230,7 +232,7 @@ public class MyPidMonitorService extends Service {
                 Log.e(TAG, "bindToTorqueService: ");
                 e.printStackTrace();
             } finally {
-
+                // null
             }
             if (successfulBind) {
                 Log.i(TAG, "onResume: BOUND TO OBDLINK");
@@ -275,8 +277,6 @@ public class MyPidMonitorService extends Service {
 
         };
 
-
-
         public void onServiceDisconnected(ComponentName name) {
             Log.e(TAG, " -= onServiceDisconnected =-");
             isBound = false;
@@ -315,18 +315,20 @@ public class MyPidMonitorService extends Service {
             intent = new Intent(options.getEcuConnectedIntent());
             getApplicationContext().sendBroadcast(intent);
             toBeLogged.append("•&nbsp Sent default broadcast with action: <font color=\"#008499\"> " +
-                    intent.getAction() + "</font><br/>");
+                    intent.getAction() + "</font><br/><br/>");
         } else {
             intent = new Intent(options.getEcuDisconnectedIntent());
             getApplicationContext().sendBroadcast(intent);
             toBeLogged.append("•&nbsp Sent default broadcast with action: <font color=\"#008499\"> " +
-                    intent.getAction() + "</font><br/>");
+                    intent.getAction() + "</font><br/><br/>");
         }
 
         if ( quitPending) {
             Log.e(TAG, "sendGlobalIntents: QUIT PENDING!");
             return;
         }
+
+        int index = 1;
 
         for (MyPID pid : pidsBeingMonitored) {
             if (pid != null) {
@@ -353,12 +355,16 @@ public class MyPidMonitorService extends Service {
                     getApplicationContext().sendBroadcast(intent);
 
                     // Construct a logentry for the PluginActivity
-                    String alarmString = "•&nbsp BROADCAST (<font color=\"#CDCDCD\">" + pid.fullName + "</font>)" +
+                    String alarmString = "•&nbsp BROADCAST " + index +
                             "<br/> &nbsp &nbsp &nbsp INTENT ACTION:  <font color=\"#008499\"> " + intent.getAction() + "</font>" +
                             "<br/> &nbsp &nbsp &nbsp INTENT EXTRA: <font color=\"#008499\">" + intent.getAction() + "</font>" +
-                            "<br/> &nbsp &nbsp &nbsp INTENT EXTRA payload: (float): <font color=\"#008499\">" + valToBroadcast + "</font><br/>";
+                            "<br/> &nbsp &nbsp &nbsp Payload: (float): <font color=\"#008499\">" + valToBroadcast + "</font><br/>" +
+                            "<br/> &nbsp &nbsp &nbsp <font color=\"#FFFFFF\">TASKER USAGE:</font>" +
+                            "<br/> &nbsp &nbsp &nbsp Variable value name:<font color=\"#FFFFFF\">" + "%" + intent.getAction() + "</font>" +
+                            "<br/> &nbsp &nbsp &nbsp Variable value will be:<font color=\"#FFFFFF\">" + valToBroadcast + "</font><br/><br/>";
                     toBeLogged.append(alarmString);
                     Log.v(TAG, "sendGlobalIntents: ALARM:<br/>" + alarmString);
+                    index++;
                 } // end shouldBroadcast
             } // end (pid != null)
         } // end (MyPID pid : pidsBeingMonitore))

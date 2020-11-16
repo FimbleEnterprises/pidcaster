@@ -12,8 +12,8 @@
     <application
         android:name=".MyApp"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/FullscreenActionBarStyle">
+        android:theme="@style/Theme.AppCompat"
+        android:label="@string/app_name">
 
 
         <activity
@@ -22,7 +22,6 @@
             android:clearTaskOnLaunch="true"
             android:exported="true"
             android:finishOnTaskLaunch="false"
-            android:theme="@style/Theme.AppCompat"
             android:noHistory="false"
             android:label="@string/app_name">
             <intent-filter>

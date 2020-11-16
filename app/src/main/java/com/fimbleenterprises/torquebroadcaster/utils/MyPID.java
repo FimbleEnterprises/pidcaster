@@ -18,7 +18,7 @@ import static com.fimbleenterprises.torquebroadcaster.MyPidMonitorService.TAG;
 public class MyPID {
 
 
-    public enum ALARM_OPERATOR {
+    public enum AlarmOperator {
         LESS_THAN, GREATER_THAN, EQUALS, NOT_EQUALS, SEND_ALWAYS;
     }
 
@@ -42,7 +42,7 @@ public class MyPID {
     /***************************************/
     /********* ALARM PROPERTIES ************/
     public float threshold;
-    public ALARM_OPERATOR operator;
+    public AlarmOperator operator;
     private String strOperator;
     public String broadcastAction;
     /********* ALARM PROPERTIES ************/
@@ -130,7 +130,7 @@ public class MyPID {
         this.lastUpdatedInMS = lastUpdatedInMS;
     }
 
-    private static String interpretOperator(ALARM_OPERATOR operator)  {
+    private static String interpretOperator(AlarmOperator operator)  {
         switch (operator) {
             case LESS_THAN:
                 return "<";
@@ -146,13 +146,13 @@ public class MyPID {
         return "";
     }
 
-    private static ALARM_OPERATOR interpretOperator(String operator) {
+    private static AlarmOperator interpretOperator(String operator) {
         if (operator == null) return null;
-        else if (operator.equals("<")) return ALARM_OPERATOR.LESS_THAN;
-        else if (operator.equals(">")) return ALARM_OPERATOR.GREATER_THAN;
-        else if (operator.equals("==")) return ALARM_OPERATOR.EQUALS;
-        else if (operator.equals("!=")) return ALARM_OPERATOR.NOT_EQUALS;
-        else if (operator.equals("--")) return ALARM_OPERATOR.SEND_ALWAYS;
+        else if (operator.equals("<")) return AlarmOperator.LESS_THAN;
+        else if (operator.equals(">")) return AlarmOperator.GREATER_THAN;
+        else if (operator.equals("==")) return AlarmOperator.EQUALS;
+        else if (operator.equals("!=")) return AlarmOperator.NOT_EQUALS;
+        else if (operator.equals("--")) return AlarmOperator.SEND_ALWAYS;
         return null;
     }
 
@@ -206,9 +206,6 @@ public class MyPID {
         prefs.edit().remove(PREF_KEY_ALARM_ENTRY + "|" + this.fullName).apply();
     }
 
-
-
-
     /**
      * Evaluates the supplied value against the previously specified alarm threshold
      * using the operator stipulated at the alarm's creation.
@@ -231,8 +228,6 @@ public class MyPID {
                 return true;
         }
     }
-
-
 
     private void setMonitorParams(String fullEntry) {
         String[] array = fullEntry.split("\\|");
