@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,6 +35,8 @@ import org.prowl.torque.remote.ITorqueService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.core.app.NavUtils;
 
 import static com.fimbleenterprises.torquebroadcaster.MyPidMonitorService.TAG;
 import static com.fimbleenterprises.torquebroadcaster.MyPidMonitorService.allMyPIDs;
@@ -343,130 +344,8 @@ public class SelectMonitorPidsActivity extends ListActivity {
         final String[] operators = getResources().getStringArray(R.array.pid_monitor_operators);
         // custom dialogd
         final Dialog dialog = new Dialog(this);
-        View layout = dialog.getLayoutInflater().inflate(R.layout.choose_pid_monitor_parameters, null);
-        final TextView txtPidBeingMonitored = (TextView) layout.findViewById(R.id.textViewPidBeingEdited);
-        txtPidBeingMonitored.setText(chosenPid.fullName);
-        dialog.setContentView(layout);
-        final TextView txtBroadcastAction = (TextView) layout.findViewById(R.id.textViewBroadcastAction);
-        final EditText editTextBroadcastAction = (EditText) layout.findViewById(R.id.editText_broadcastAction);
-        editTextBroadcastAction.setText(new String(chosenPid.fullName + "_TORQUE").toLowerCase().replace(" ", "_"));
-        editTextBroadcastAction.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return false;
-            }
-        });
-        final Spinner spinnerOperator = (Spinner) layout.findViewById(R.id.spinner_operator);
-        spinnerOperator.requestFocus();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, operators);
-        spinnerOperator.setAdapter(adapter);
-        if (chosenPid.isMonitored(prefs)) {
-            int itemInt;
-            switch (chosenPid.operator) {
-                case SEND_ALWAYS:
-                    itemInt = 0;
-                    break;
-                case LESS_THAN:
-                    itemInt = 1;
-                    break;
-                case GREATER_THAN:
-                    itemInt = 2;
-                    break;
-                case EQUALS:
-                    itemInt = 3;
-                    break;
-                case NOT_EQUALS:
-                    itemInt = 4;
-                    break;
-                default:
-                    itemInt = 0;
-            }
-            spinnerOperator.setSelection(itemInt);
-        }
-        spinnerOperator.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] operators = getResources().getStringArray(R.array.pid_monitor_operators);
-                MyPID.ALARM_OPERATOR operator;
-                float threshold = 0;
-                switch (position) {
-                    case 0:
-                        operator = MyPID.ALARM_OPERATOR.SEND_ALWAYS;
-                        break;
-                    case 1:
-                        operator = MyPID.ALARM_OPERATOR.LESS_THAN;
-                        break;
-                    case 2:
-                        operator = MyPID.ALARM_OPERATOR.GREATER_THAN;
-                        break;
-                    case 3:
-                        operator = MyPID.ALARM_OPERATOR.EQUALS;
-                        break;
-                    case 4:
-                        operator = MyPID.ALARM_OPERATOR.NOT_EQUALS;
-                        break;
-                    default:
-                        operator = MyPID.ALARM_OPERATOR.SEND_ALWAYS;
-                }
-                chosenPid.operator = operator;
-            }
+        View layout = dialog.getLayoutInflater().inflate(R.layout.activity_choose_pid, null);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        final EditText editTextThreshold = (EditText) layout.findViewById(R.id.editText_threshold);
-        editTextThreshold.setSelectAllOnFocus(true);
-        final Button btnCommit = (Button) layout.findViewById(R.id.btnCommitParams);
-        if (chosenPid.isMonitored(prefs)) {
-            editTextThreshold.setText(String.valueOf(chosenPid.threshold));
-            editTextBroadcastAction.setText(new String(chosenPid.broadcastAction).replace(" ", "_"));
-        } else {
-            editTextThreshold.setText(String.valueOf(0));
-        }
-
-        dialog.setTitle("Choose Monitor Parameters");
-        dialog.setCancelable(true);
-        btnCommit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chosenPid.threshold = Float.parseFloat(editTextThreshold.getText().toString());
-                chosenPid.broadcastAction = editTextBroadcastAction.getText().toString().toLowerCase();
-                dialog.dismiss();
-                chosenPid.monitor(options.getSharedPrefs());
-                setResult(PreferencesActivity.RESULT_NEED_RESTART);
-                Toast.makeText(getApplicationContext(), "PID now monitored",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        final Button btnRemoveMonitor = (Button) layout.findViewById(R.id.btnRemoveMonitor);
-        btnRemoveMonitor.setEnabled(chosenPid.isMonitored(prefs));
-        btnRemoveMonitor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chosenPid.stopMonitoring();
-                setResult(PreferencesActivity.RESULT_NEED_RESTART);
-                Toast.makeText(getApplicationContext(), "PID monitor removed.",
-                        Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-        dialog.show();
     }
 
     public class MyPidAdapter extends ArrayAdapter {

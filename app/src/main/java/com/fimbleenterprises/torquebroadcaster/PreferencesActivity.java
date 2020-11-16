@@ -14,13 +14,14 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.core.app.NavUtils;
 
 import static com.fimbleenterprises.torquebroadcaster.PluginActivity.TAG;
 
@@ -204,7 +205,7 @@ public class PreferencesActivity extends PreferenceActivity {
         final Dialog dialog = new Dialog(this);
         dialog.setTitle("Choose Monitor Parameters");
         dialog.setCancelable(true);
-        View layout = dialog.getLayoutInflater().inflate(R.layout.choose_pid_monitor_parameters, null);
+        View layout = dialog.getLayoutInflater().inflate(R.layout.activity_choose_pid, null);
         dialog.setContentView(layout);
 
 

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -19,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -56,73 +57,6 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.settings_activity);
 
         txtEcuDisconnectedIntent = (TextView) findViewById(R.id.EditText_OnEcuDisconnected);
-        txtEcuDisconnectedIntent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeSettingDialog(PID_BROADCAST_TO_CHANGE.ECU_DISCONNECTED);
-            }
-        });
-        txtEcuConnectedIntent = (TextView) findViewById(R.id.EditText_OnEcuConnected);
-        txtEcuConnectedIntent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeSettingDialog(PID_BROADCAST_TO_CHANGE.ECU_CONNECTED);
-            }
-        });
-        txtPidZeroIntent = (TextView) findViewById(R.id.editText_OnZeroValue);
-        txtPidZeroIntent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeSettingDialog(PID_BROADCAST_TO_CHANGE.ENGINE_RUNNING);
-            }
-        });
-        txtPidNonZeroIntent = (TextView) findViewById(R.id.editText_OnNonZeroValue);
-        txtPidNonZeroIntent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeSettingDialog(PID_BROADCAST_TO_CHANGE.ENGINE_OFF);
-            }
-        });
-        txtSendValueIntent = (TextView) findViewById(R.id.editTextSendValueIntent);
-        btnSaveIntentVals = (Button) findViewById(R.id.btnSaveIntentValues);
-        btnSetEngineMonitorPid = (Button) findViewById(R.id.btnEngineMonitorPid);
-
-        btnSetMonitoredPIDs = (Button) findViewById(R.id.buttonMonitorList);
-        btnSetMonitoredPIDs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SelectMonitorPidsActivity.class);
-                startActivity(intent);
-            }
-        });
-        btnAllowEditing = (ToggleButton) findViewById(R.id.toggleButtonFocusable);
-        btnAllowEditing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isEditable = btnAllowEditing.isChecked();
-                setTextViewsEditable();
-            }
-        });
-        btnSaveIntentVals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                savePrefs();
-            }
-        });
-        btnSetDefaults = (Button) findViewById(R.id.btnSetDefaults);
-        btnSetDefaults.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDefaultPicker();
-            }
-        });
-        txtFrequency = (TextView) findViewById(R.id.textView17);
-        txtFrequency.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeSettingDialog(PID_BROADCAST_TO_CHANGE.FREQUENCY);
-            }
-        });
 
         if (savedInstanceState != null) {
             try {
@@ -295,92 +229,6 @@ public class SettingsActivity extends AppCompatActivity {
         txtSendValueIntent.setEnabled(!val);
         txtFrequency.setEnabled(!val);
     }*/
-
-    public void changeSettingDialog(final PID_BROADCAST_TO_CHANGE whichOne) {
-        final Dialog dialog = new Dialog(this);
-        dialog.setTitle("Choose Monitor Parameters");
-        dialog.setCancelable(true);
-        View layout = dialog.getLayoutInflater().inflate(R.layout.choose_pid_monitor_parameters, null);
-        dialog.setContentView(layout);
-        final TextView txtViewOperatorLabel = (TextView) layout.findViewById(R.id.textView10);
-        final TextView thresholdText = (TextView) layout.findViewById(R.id.textView11);
-        txtViewOperatorLabel.setText("Frequency:");
-        final TextView txtBroadcastAction = (TextView) layout.findViewById(R.id.textViewBroadcastAction);
-        final EditText editTextBroadcastAction = (EditText) layout.findViewById(R.id.editText_broadcastAction);
-        final TextView titleText = (TextView) layout.findViewById(R.id.textViewPidBeingEdited);
-
-        thresholdText.setVisibility(View.GONE);
-        final Spinner spinnerOperator = (Spinner) layout.findViewById(R.id.spinner_operator);
-        spinnerOperator.setVisibility(View.GONE);
-        final EditText editTextFrequency = (EditText) layout.findViewById(R.id.editText_threshold);
-        editTextFrequency.setSelectAllOnFocus(true);
-
-        switch (whichOne) {
-            case ECU_CONNECTED:
-                titleText.setText("While ECU Connected Broadcast");
-                editTextBroadcastAction.setText(new String(options.getEcuConnectedIntent()).toLowerCase().replace(" ", "_"));
-                break;
-            case ECU_DISCONNECTED:
-                titleText.setText("While ECU Disconnected Broadcast");
-                editTextBroadcastAction.setText(new String(options.getEcuDisconnectedIntent()).toLowerCase().replace(" ", "_"));
-                break;
-            case ENGINE_OFF:
-                titleText.setText("While Engine On Broadcast");
-                editTextBroadcastAction.setText(new String(options.getNonZeroValueIntent()).toLowerCase().replace(" ", "_"));
-                break;
-            case ENGINE_RUNNING:
-                titleText.setText("While Engine Off broadcast");
-                editTextBroadcastAction.setText(new String(options.getOnZeroValueIntent()).toLowerCase().replace(" ", "_"));
-                break;
-            case FREQUENCY:
-                titleText.setText("Set Broadcast Frequency");
-                editTextFrequency.setText(""+options.getFrequency());
-                break;
-        }
-
-        if (whichOne == PID_BROADCAST_TO_CHANGE.FREQUENCY) {
-            txtBroadcastAction.setVisibility(View.GONE);
-            editTextBroadcastAction.setVisibility(View.GONE);
-            // thresholdText.setVisibility(View.VISIBLE);
-            txtViewOperatorLabel.setVisibility(View.VISIBLE);
-            editTextFrequency.setVisibility(View.VISIBLE);
-        } else {
-            txtBroadcastAction.setVisibility(View.VISIBLE);
-            editTextBroadcastAction.setVisibility(View.VISIBLE);
-            //thresholdText.setVisibility(View.GONE);
-            txtViewOperatorLabel.setVisibility(View.GONE);
-            editTextFrequency.setVisibility(View.GONE);
-        }
-
-        final Button btnCommit = (Button) layout.findViewById(R.id.btnCommitParams);
-        btnCommit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                switch (whichOne) {
-                    case ECU_CONNECTED:
-                        options.setEcuConnectedIntent(editTextBroadcastAction.getText().toString());
-                        break;
-                    case ECU_DISCONNECTED:
-                        options.setEcuConnectedIntent(editTextBroadcastAction.getText().toString());
-                        break;
-                    case ENGINE_OFF:
-                        options.setEcuConnectedIntent(editTextBroadcastAction.getText().toString());
-                        break;
-                    case ENGINE_RUNNING:
-                        options.setEcuConnectedIntent(editTextBroadcastAction.getText().toString());
-                        break;
-                    case FREQUENCY:
-                        options.setFrequency(Integer.parseInt(editTextFrequency.getText().toString()));
-                        break;
-                }
-
-                Toast.makeText(getApplicationContext(), "Saved",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog.show();
-    }
 
     enum PID_BROADCAST_TO_CHANGE {
         ECU_CONNECTED, ECU_DISCONNECTED, ENGINE_RUNNING, ENGINE_OFF, FREQUENCY

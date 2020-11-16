@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical" >
-    <View
+<!--    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="6dp"
@@ -16,5 +16,5 @@
         android:padding="12dp"
         android:textColor="#937B00"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold" />-->
 </LinearLayout>

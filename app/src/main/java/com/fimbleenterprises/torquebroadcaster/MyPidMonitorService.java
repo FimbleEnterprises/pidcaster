@@ -1,5 +1,7 @@
 package com.fimbleenterprises.torquebroadcaster;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -11,6 +13,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -18,7 +21,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.support.v7.app.NotificationCompat;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -45,7 +50,7 @@ public class MyPidMonitorService extends Service {
     public static boolean quitPending = false;
 
     public static ITorqueService torqueService;
-public static boolean isBound = false;
+    public static boolean isBound = false;
     private NumberFormat nf;
     MyHandler myHandler = new MyHandler();
     Runnable runner;
@@ -265,7 +270,7 @@ public static boolean isBound = false;
                 // torqueService.setDebugTestMode(true);
                 startMonitoring();
             } catch (RemoteException e) {
-
+                e.printStackTrace();
             }
 
         };
@@ -382,90 +387,105 @@ public static boolean isBound = false;
     }
 
     public void showNotification() {
-        showNotification("(" + pidsBeingMonitored.size() + ") Last broadcast: " +
-                new Date(System.currentTimeMillis()).toLocaleString());
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            showNotification("(" + pidsBeingMonitored.size() + ") Last broadcast: " +
+                    new Date(System.currentTimeMillis()).toLocaleString());
+        }*/
+    }
+
+    public void showNotification2() {
+
     }
 
     public void showNotification(String summaryText) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-        if (summaryText.equals("")) summaryText = "Broadcasts are being sent";
-        String pluralizer = "PIDs";
+            if (summaryText.equals("")) summaryText = "Broadcasts are being sent";
+            String pluralizer = "PIDs";
 
-        String pidList = "";
-        for (int i = 0; i < pidsBeingMonitored.size(); i++) {
-            try {
-                if (i <= 3) {
-                    MyPID myPid = pidsBeingMonitored.get(i);
-                    pidList += " ► " + myPid.fullName + "\n";
+            String pidList = "";
+            for (int i = 0; i < pidsBeingMonitored.size(); i++) {
+                try {
+                    if (i <= 3) {
+                        MyPID myPid = pidsBeingMonitored.get(i);
+                        pidList += " ► " + myPid.fullName + "\n";
+                    }
+                } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                    Log.e(TAG, "showNotification: " + indexOutOfBoundsException.getMessage());
                 }
-            } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-                Log.e(TAG, "showNotification: " + indexOutOfBoundsException.getMessage());
             }
+            if (pidsBeingMonitored.size() > 3) {
+                pidList += " ...and " + (pidsBeingMonitored.size() - 4) + " more";
+            }
+
+            if (pidList.contains("0")) {
+                pidList = pidList.replace("...and 0 more", "");
+            }
+
+            int count = pidsBeingMonitored.size();
+            if (count == 1) {
+                pluralizer = "PID";
+            } else {
+                pluralizer = "PIDs";
+            }
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.broadcast_icon128x128);
+            builder.setOngoing(true);
+            builder.setWhen(System.currentTimeMillis());
+            builder.setContentTitle("PID Broadcaster");
+            builder.setTicker("PIDcaster started!");
+            builder.setContentText("A Torque plugin");
+            builder.setSmallIcon(R.drawable.broadcast_icon_tiny);
+            builder.setLargeIcon(largeIcon);
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+            builder.setSubText(summaryText);
+            NotificationCompat.BigTextStyle bigTextStyle =
+                    new NotificationCompat.BigTextStyle()
+                            .bigText(" Currently monitoring " + count + " " + pluralizer + ":\n" + pidList)
+                            .setBigContentTitle("PID Broadcaster");
+            builder.setStyle(bigTextStyle);
+
+            Intent actionIntentGoTo = new Intent(this, NotificationReceiverActivity.class);
+            actionIntentGoTo.setAction(NotificationReceiverActivity.INTENT_ACTION_GOTO_SERVICE);
+            PendingIntent actionPendingIntentGoTo = PendingIntent.getActivity(this, 0, actionIntentGoTo,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(actionPendingIntentGoTo);
+
+            Intent actionIntentQuit = new Intent(this, NotificationReceiverActivity.class);
+            actionIntentQuit.setAction(NotificationReceiverActivity.INTENT_ACTION_STOP_SERVICE);
+            PendingIntent actionPendingIntentQuit = PendingIntent.getActivity(this, 0, actionIntentQuit,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, "STOP", actionPendingIntentQuit);
+
+            Intent actionIntentStopTorque = new Intent(this, NotificationReceiverActivity.class);
+            actionIntentQuit.setAction(INTENT_KILL_TORQUE);
+            PendingIntent actionPendingIntentQuitTorque = PendingIntent.getActivity(this, 0, actionIntentStopTorque,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            // This kills Torque but fails to take this plugin with it - not worth addressing and
+            // simply decided to omit this functionality.
+            // builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, "QUIT TORQUE", actionPendingIntentQuitTorque);
+
+            // Sets an ID for the notification
+            int mNotificationId = 001;
+            // Gets an instance of the NotificationManager service
+            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationChannel channel = null;
+            channel = new NotificationChannel("PID_CASTER_CHANNEL", "PID_CASTER", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("PID_CASTER");
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = null;
+
+            notificationManager = getSystemService(NotificationManager.class);
+
+            notificationManager.createNotificationChannel(channel);
+            // Builds the notification and issues it.
+            mNotifyMgr.notify(mNotificationId, builder.build());
         }
-        if (pidsBeingMonitored.size() > 3) {
-            pidList += " ...and " + (pidsBeingMonitored.size() - 4) + " more";
-        }
-
-        if (pidList.contains("0")) {
-            pidList = pidList.replace("...and 0 more", "");
-        }
-
-        int count = pidsBeingMonitored.size();
-        if (count == 1) {
-            pluralizer = "PID";
-        } else {
-            pluralizer = "PIDs";
-        }
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.broadcast_icon128x128);
-        builder.setOngoing(true);
-        builder.setWhen(System.currentTimeMillis());
-        builder.setContentTitle("PID Broadcaster");
-        builder.setTicker("PIDcaster started!");
-        builder.setContentText("A Torque plugin");
-        builder.setSmallIcon(R.drawable.broadcast_icon_tiny);
-        builder.setLargeIcon(largeIcon);
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.setSubText(summaryText);
-        NotificationCompat.BigTextStyle bigTextStyle =
-                new NotificationCompat.BigTextStyle()
-                        .bigText(" Currently monitoring " + count + " " + pluralizer + ":\n" +
-                                pidList)
-                        .setBigContentTitle("PID Broadcaster");
-        builder.setStyle(bigTextStyle);
-
-        Intent actionIntentGoTo = new Intent(this, NotificationReceiverActivity.class);
-        actionIntentGoTo.setAction(NotificationReceiverActivity.INTENT_ACTION_GOTO_SERVICE);
-        PendingIntent actionPendingIntentGoTo = PendingIntent.getActivity(this, 0, actionIntentGoTo,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(actionPendingIntentGoTo);
-
-        Intent actionIntentQuit = new Intent(this, NotificationReceiverActivity.class);
-        actionIntentQuit.setAction(NotificationReceiverActivity.INTENT_ACTION_STOP_SERVICE);
-        PendingIntent actionPendingIntentQuit = PendingIntent.getActivity(this, 0, actionIntentQuit,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, "STOP", actionPendingIntentQuit);
-
-        Intent actionIntentStopTorque = new Intent(this, NotificationReceiverActivity.class);
-        actionIntentQuit.setAction(INTENT_KILL_TORQUE);
-        PendingIntent actionPendingIntentQuitTorque = PendingIntent.getActivity(this, 0, actionIntentStopTorque,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        // This kills Torque but fails to take this plugin with it - not worth addressing and
-        // simply decided to omit this functionality.
-        // builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, "QUIT TORQUE", actionPendingIntentQuitTorque);
-
-        // Sets an ID for the notification
-        int mNotificationId = 001;
-        // Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, builder.build());
     }
 
     public void hideNotification() {
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotifyMgr.cancelAll();
     }
 
