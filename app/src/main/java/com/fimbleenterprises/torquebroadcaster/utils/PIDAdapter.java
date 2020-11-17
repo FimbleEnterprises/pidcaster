@@ -186,83 +186,20 @@ public class PIDAdapter extends BaseAdapter {
             pidName = "[Unnamed]";
          }
 
-         /*String pidHex = Long.toString(pid.getPid(),16);
-         if (pidHex.length() % 2 == 1) {
-            pidHex="0"+pidHex;
-         }*/
-
          String latestVal = "";
 
-         
-         //ITorqueService torqueService = PluginActivity.getInstance().getTorqueService();
-         
-      
-      //   long[] mpids = torqueService.getListOfActivePids();
-      //   long[] spids = torqueService.getListOfECUSupportedPids();
-
-/*         String[] mpids = torqueService.listActivePIDs();
-         String[] spids = torqueService.listECUSupportedPIDs();
-
-         
-         
-         float result = torqueService.getPIDValues(new String[] {pid.getPid()})[0];*/
-         //if (pid.isUserPid()) {
-         //   result = pid.getUserPidValue(true);
-        // }
-            
          String unit = "";
          if (pid.getUnit() != null)
             unit = pid.getUnit();
 
-        
-
          int color = Color.BLACK;
-         Bitmap icon = null;
-
-/*
-         if (containsPID(mpids, pid.getPid())) {
-            color = dkGreen;
-           // if (result instanceof Number){
-               latestVal = "Latest raw value: "+nf.format((Number)result)+unit;
-           // } else {
-           //    if (result != null) {
-          //        latestVal = String.valueOf(result);
-          //     } else {
-          //        latestVal = "No data received";
-          //     }
-          //  }
-         } else if (containsPID(spids, pid.getPid())) {
-            color = dkGreenB;
-            latestVal = "Waiting for data";
-         } else {
-            latestVal = "No data received";
-         }*/
-         
          String left = pid.getPid().substring(0,pid.getPid().indexOf(","));
          // Bind the data efficiently with the holder.
          holder.firstLine.setText(pidName+" ["+left+"]");
          holder.thirdLine.setText(latestVal);//"PID: "+pidHex+"  Unit:"+pid.getUnit()+" Max/Min:"+pid.getMax()+"/"+pid.getMin());
          holder.secondLine.setText("");//Equation: " +pid.getEquation());
-         
-         
-         //if (CurrentStatistics.hasStatRAW(pid.getPid()) || (pid.isUserPid() && pid.isUserPidUpdatedRecently())) {
-            // icon = notok;
-         //} else if (FrontPage.getInstance().getObd().isSensorSupported(pid.getPid())) {
-         //   color = dkGreenB;
-         //}
-
          convertView.setBackgroundColor(color);
          holder.icon.setImageBitmap(null);
-
-         /*if (pidHex.startsWith("01")) {
-         holder.icon.setImageBitmap(current);
-      } else if (pidHex.startsWith("02")) {
-          holder.icon.setImageBitmap(freeze);
-      } else if (pidHex.startsWith("05") || pidHex.startsWith("06")) {
-         holder.icon.setImageBitmap(test);
-      } else {
-         holder.icon.setImageBitmap(defaultIcon);
-      }*/
 
       } catch(Throwable e) {
          DebugConfig.debug(e);
@@ -271,6 +208,7 @@ public class PIDAdapter extends BaseAdapter {
    }
    
    public static final HashMap<Long, String> toHexCache = new HashMap();
+
    public static String toHex(long i) {
       String pidHex = toHexCache.get(i);
       if (pidHex != null)

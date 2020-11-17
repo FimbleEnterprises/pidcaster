@@ -1,0 +1,57 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+
+    <string-array name="distance_threshold_entries">
+        <item>None</item>
+        <item>1/4 Mile</item>
+        <item>1/2 Mile</item>
+        <item>1 Mile</item>
+        <item>5 Miles</item>
+        <item>10 Miles</item>
+    </string-array>
+
+    <string-array name="distance_threshold_values">
+        <item>0</item>
+        <item>402</item>
+        <item>805</item>
+        <item>1609</item>
+        <item>8046</item>
+        <item>1693</item>
+    </string-array>
+
+    <string-array name="trip_minder_intervals">
+        <item>30 secs (debug)</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+    </string-array>
+
+    <string-array name="trip_minder_intervals_values">
+        <item>30000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1200000</item>
+    </string-array>
+
+    <string-array name="receipt_formats">
+        <item>Text File</item>
+        <item>PNG File</item>
+        <item>JPEG File</item>
+    </string-array>
+
+    <string-array name="receipt_formats_values">
+        <item>.txt</item>
+        <item>.png</item>
+        <item>.jpeg</item>
+    </string-array>
+
+</resources>

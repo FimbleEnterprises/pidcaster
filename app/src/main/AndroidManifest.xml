@@ -71,7 +71,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_select_monitor_pids"
             android:parentActivityName=".PluginActivity"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/Theme.Design.Light">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fimbleenterprises.torquebroadcaster.PluginActivity"/>
@@ -79,13 +79,23 @@
         <activity
             android:name=".PreferencesActivity"
             android:label="@string/title_activity_preferences"
-            android:theme="@style/PreferenceScreen"
+            android:theme="@style/Theme.AppCompat"
             android:parentActivityName=".PluginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fimbleenterprises.torquebroadcaster.PluginActivity"/>
         </activity>
         <activity android:name=".NotificationReceiverActivity" android:label="Notification STOP Clicked"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
     </application>
 

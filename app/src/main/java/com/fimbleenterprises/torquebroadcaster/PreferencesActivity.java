@@ -21,6 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.fimbleenterprises.torquebroadcaster.utils.Helpers;
+
+import java.io.File;
+
 import androidx.core.app.NavUtils;
 
 import static com.fimbleenterprises.torquebroadcaster.PluginActivity.TAG;
@@ -56,9 +60,6 @@ public class PreferencesActivity extends PreferenceActivity {
         context = getApplicationContext();
     }
 
-
-
-
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -90,7 +91,6 @@ public class PreferencesActivity extends PreferenceActivity {
         }
     };
 
-
     /**
      * Binds a preference's summary to its value. More specifically, when the
      * preference's value is changed, its summary (line of text below the
@@ -115,6 +115,7 @@ public class PreferencesActivity extends PreferenceActivity {
 
     public static class MyPreferenceFragment extends PreferenceFragment  {
         Preference prefChoosePids;
+        Preference prefMakeTaskerSample;
         private static final String TAG = "MyPrefereceFragment";
 
         @Override
@@ -130,6 +131,16 @@ public class PreferencesActivity extends PreferenceActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent(getActivity(), SelectMonitorPidsActivity.class);
                     startActivityForResult(intent, 0);
+                    return false;
+                }
+            });
+
+            prefMakeTaskerSample = findPreference("PREF_MAKE_SAMPLE_TASKER_PROFILE");
+            prefMakeTaskerSample.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    File file = Helpers.Files.writeToFile("sample_tasker_profile.xml", Helpers.Strings.getTaskerSampleProfileString(), context);
+                    Helpers.Files.shareFile(context, file);
                     return false;
                 }
             });
@@ -211,23 +222,4 @@ public class PreferencesActivity extends PreferenceActivity {
 
 
     }
-
-
-/*
-
-    */
-
-    /*    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            if (!super.onMenuItemSelected(featureId, item)) {
-                NavUtils.navigateUpFromSameTask(this);
-            }
-            return true;
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }*/
-
-
 }

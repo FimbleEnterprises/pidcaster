@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="Broadcast Frequency"
                         android:layout="@layout/my_preference_category">
@@ -74,6 +75,12 @@
             android:summaryOff="Values are being converted to imperial"
             android:summaryOn="Values are currently using the metric system">
         </CheckBoxPreference>
+
+        <Preference
+            android:key="PREF_MAKE_SAMPLE_TASKER_PROFILE"
+            android:title="Create sample tasker profile"
+            android:summary="Creates a basic Tasker profile that will beep the device when the ECU connects/disconnects.  Import this file using Tasker.">
+        </Preference>
 
     </PreferenceCategory>
 

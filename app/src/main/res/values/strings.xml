@@ -1,5 +1,234 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings...</string>
+    <string name="action_delete_backups">Delete all...</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_mileage">Home</string>
+    <string name="menu_data">Data</string>
+    <string name="menu_users">Users</string>
+    <string name="menu_authentication">Login</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_sales_and_more">Sales and more</string>
+
+    <string name="triplist_today">Today</string>
+    <string name="triplist_yesterday">Yesterday</string>
+    <string name="triplist_this_week">This week</string>
+    <string name="triplist_last_week">Last week</string>
+    <string name="triplist_this_month">This month</string>
+    <string name="triplist_last_month_and_older">Last month and older</string>
+
+    <!-- EXPLICIT STRINGS -->
+    <string name="menu_home_explicit">Home</string>
+    <string name="menu_mileage_explicit">Fucking Mileage</string>
+    <string name="menu_data_explicit">Fucking Data</string>
+    <string name="menu_stats_explicit">Fucking Stats</string>
+    <string name="menu_settings_explicit">Fucking Settings</string>
+    <string name="menu_authentication_explicit">Fucking Login</string>
+    <string name="menu_other_fucking_sales_shit">Fucking sales and shit</string>
+    <string name="menu_users_explicit">Other Fuckers</string>
+
+    <string name="action_settings_explicit">Fucking settings...</string>
+    <string name="action_update_check">Check for update</string>
+    <string name="action_update_check_explicit">Update this shit</string>
+
+    <string name="triplist_today_explicit">Fucking today</string>
+    <string name="triplist_yesterday_explicit">Fucking yesterday</string>
+    <string name="triplist_this_week_explicit">This fucking week</string>
+    <string name="triplist_last_week_explicit">Last fucking week</string>
+    <string name="triplist_this_month_explicit">This fucking month</string>
+    <string name="triplist_last_month_and_older_explicit">Last month and fucking older</string>
+
+    <!-- Trip options -->
+    <string name="tripOptions_view_explicit">Fucking View</string>
+    <string name="tripOptions_submit_explicit">Fucking Submit</string>
+    <string name="tripOptions_recall_explicit">Fucking Recall</string>
+    <string name="tripOptions_edit_explicit">Fucking Edit</string>
+    <string name="tripOptions_delete_explicit">Fucking Delete</string>
+
+    <string name="tripOptions_view">View</string>
+    <string name="tripOptions_submit">Submit</string>
+    <string name="tripOptions_recall">Recall</string>
+    <string name="tripOptions_edit">Edit</string>
+    <string name="tripOptions_delete">Delete</string>
+
+    <!-- EXPLICIT FUCKING PREFERENCES -->
+    <string name="settings_mileage_title_explicit">Mileage shit</string>
+    <string name="settings_name_trips_explicit">Name your fucking trips</string>
+    <string name="settings_auto_submit_explicit">Auto-fucking-submit trips</string>
+    <string name="settings_confirmend_explicit">Confirm you want to fucking stop</string>
+    <string name="settings_auto_stop_explicit">Auto-fucking-stop trips</string>
+    <string name="settings_auto_stop_interval_explicit">Fucking stop interval</string>
+    <string name="settings_receipt_format_explicit">Receipt fucking format</string>
+    <string name="settings_permissions_explicit">Fucking permissions</string>
+
+    <string name="settings_users_title">Fucking Users</string>
+    <string name="settings_update_me_explicit">Update my-fucking-self</string>
+    <string name="settings_update_addresses_explicit">Update fucking addresses</string>
+    <string name="settings_update_account_addresses_explicit">Update fucking account addresses</string>
+
+    <string name="settings_database_explicit">The Fucking Database</string>
+    <string name="settings_delete_mileage_explicit">Delete all fucking mileage</string>
+    <string name="settings_delete_empty_explicit">Delete empty fucking trips</string>
+
+    <string name="settings_other_explicit">Other Shit</string>
+    <string name="settings_prompt_opportunities_explicit">Update fucking opportunities</string>
+    <string name="settings_delete_local_updates_explicit">Delete local fucking updates</string>
+    <string name="settings_check_updates_explicit">Automatically check for fucking updates</string>
+    <string name="settings_debug_explicit">Debug mode, bitch</string>
+    <string name="settings_explicit_explicit">Naughty words?</string>
+
+    <string name="settings_experimental_menu_explicit">Experimental Shit</string>
+
+    <string name="home_second">Home Second</string>
+    <string name="NotificationText">Trip running</string>
+    <string name="stop_trip_btn_notification_text">Stop</string>
+    <string name="title_activity_view_trip">View Trip</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="google_maps_key">AIzaSyDHaFYs8cUyI1Ta5RtOxhg1pXPAd2W9RBs</string>
+    <string name="action_login">Login</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="title_activity_activitiy__restore_db">Restore</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_restore_db">Restore Database</string>
+    <string name="action_update">Check for update</string>
+
+    <string name="title_activity_aggregate_stats">AggregateStats</string>
+    <string name="menu_stats">Aggregate stats</string>
+    <string name="lastest_version">You are running the most recent version</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
+    <string name="logout_explicit">Log the fuck out</string>
+    <string name="login_explicit">Log the fuck in</string>
+    <string name="stopping_trip">Stopping trip...</string>
+    <string name="must_login">You must login</string>
+    <string name="loading">Loading...</string>
+    <string name="retry">Retry</string>
+    <string name="version">"Version "</string>
+    <string name="action_permissions">Adjust permissions...</string>
+    <string name="receipt_mail_body">MediBuddy generated mileage receipt.</string>
+    <string name="receipt_mail_subject_preamble">Mileage Receipt</string>
+    <string name="title_activity_numbers">Sales and Goals</string>
+    <string name="title_activity__sales_performance">ScrollingActivity</string>
+    <string name="menu_sales">Sales and more</string>
+    <string name="action_change_date">Change Date...</string>
+    <string name="action_last_month">Last month</string>
+    <string name="action_this_month">This month</string>
+    <string name="action_this_year">This year</string>
+    <string name="action_last_year">Last year</string>
+    <string name="action_east_region">East region</string>
+    <string name="action_west_region">West region</string>
+    <string name="title_activity_fullscreen_choose_territory">FullscreenActivity</string>
+    <string name="action_choose_territory">Territory...</string>
+    <string name="is_edited_explicit">FUCKING EDITED</string>
+    <string name="is_edited">EDITED</string>
+    <string name="is_manual_explicit">PROBABLY FAKE</string>
+    <string name="is_manual">MANUAL TRIP</string>
+    <string name="is_autostopped_explicit">FUCKING-STOPPED</string>
+    <string name="is_autostopped">AUTO-STOPPED</string>
+    <string name="start_marker">Start</string>
+    <string name="start_marker_explicit">Fucking start</string>
+    <string name="end_marker_explicit">Fucking end</string>
+    <string name="end_marker">End</string>
+    <string name="select_user">Choose user</string>
+    <string name="select_user_explicit">Select fucking user</string>
+    <string name="set_defaults">Set defaults</string>
+    <string name="set_defaults_explicit">Set fucking defaults</string>
+    <string name="set_defaults_description">Revert all settings to their defaults</string>
+    <string name="set_defaults_description_explicit">Revert all fucking settings to their fucking defaults</string>
+    <string name="change_server_addy">Change server url</string>
+    <string name="change_server_addy_explicit">Change fucking server addy</string>
+    <string name="change_server_addy_description">Change server url that is used for all queries.  Don\'t screw this up!  Leave blank to revert to default.</string>
+    <string name="change_server_addy_description_explicit">Change the fucking server url that is used for all fucking queries.  Don\'t screw this up, moron!  Leave blank to revert to fucking default.</string>
+    <string name="use_naught_words_settings_title">Use naughty words</string>
+    <string name="settings_check_updates">Automatically check for updates</string>
+    <string name="settings_debug">Debug mode</string>
+    <string name="settings_delete_local_updates_title">Delete local updates</string>
+    <string name="settings_delete_local_updates_summary">Removes any locally saved update files.</string>
+    <string name="settings_experimental_menu_summary">Execute whatever function exists under this preference button.  It could be anything!</string>
+    <string name="settings_experimental_menu_title">Test function</string>
+    <string name="distance_threshold_settings_title">Account/Opportunity distance threshold</string>
+    <string name="distance_threshold_settings_summary">Distance threshold with which to use when checking for nearby accounts/opportunities</string>
+    <string name="delete_empty_trips_summary">Deletes all trips shorter than two miles.</string>
+    <string name="delete_empty_trips_title">Delete empty trips</string>
+    <string name="settings_auto_stop_summary">Trips will evaluate the length of time between location updates to determine if you have forgotten to end a trip.</string>
+    <string name="settings_auto_stop_title">Auto-stop trips</string>
+    <string name="validate_server_url_progress_msg">Validating server url...</string>
+    <string name="server_url_validated_successfully">Server url validated successfully.</string>
+    <string name="server_url_validated_unsuccessfully">Failed!  Server url NOT updated!</string>
+    <string name="base_server_url">https://mediproxyrestapi.azurewebsites.net/api/crm/PerformCrmAction/</string>
+    <!--<string name="base_server_url">https://localhost:44341/api/crm/PerformCrmAction/</string>-->
+    <string name="update_opportunities_explicit">Update fucking opportunities</string>
+    <string name="update_opportunities">Update opportunities</string>
+    <string name="title_activity_opportunity">FullscreenActivity</string>
+    <string name="title_activity_fullscreen_choose_opportunity">Choose Opportunity</string>
+    <string name="btn_opportunity_done">Done</string>
+    <string name="loading_opportunity">Loading...</string>
+    <string name="opportunity_status_label">Status:</string>
+    <string name="opportunity_dealstatus_label">Deal status:</string>
+    <string name="opportunity_background_label">Background:</string>
+    <string name="opportunity_close_prob_label">Close probability:</string>
+    <string name="opportunity_dealtype_label">Deal type:</string>
+    <string name="add_note_dialog_title">Note</string>
+    <string name="note_options_dialog_title">Note options</string>
+    <string name="delete_note_button">Delete</string>
+    <string name="edit_note_button">Edit</string>
+    <string name="opportunities_about_this_list">These are opportunities in your territory.  Some may be nearby this trip.  \n\nYou can view and even update these opportunities if you find that convenient.</string>
+    <string name="opportunities_about_this_list_explicit">These are your fucking opportunities and some have been determined to be kinda close to your dumbass trip.  \n\nYou can view and even update them if you want.  I don\'t give a shit either way.</string>
+    <string name="opp_name_label">Topic:</string>
+    <string name="add_quick_note_button">Add quick note...</string>
+    <string name="view_opportunity_button">See more</string>
+    <string name="btn_opportunity_showtripoptions">Opportunities</string>
+    <string name="edit_note_view_attachment">View</string>
+    <string name="delete_note_share_attachment">Share...</string>
+    <string name="delete_note_remove_attachment">Remove</string>
+    <string name="delete_note_add_attachment">Add...</string>
+    <string name="title_activity_receive_share_for_opp_note">FullscreenActivity</string>
+    <string name="opportunity_picker_main_text_external_launch_explicit">"Pick a fucking opportunity to attach this fucking file to.  "</string>
+    <string name="opportunity_picker_main_text_external_launch">Choose an opportunity to attach this file to.</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="extended_fab_content_desc">Add note</string>
+    <string name="extended_fab_label">Add note</string>
+    <string name="title_activity_individual_aggregate_stats">Stats</string>
+    <string name="action_export_to_excel">Export to Excel...</string>
+    <string name="action_export_as_png">Export as image...</string>
+    <string name="export_aggregate_stats_excel_progress_dialog">Getting, parsing, building and exporting aggregate stats...</string>
+    <string name="progress_dialog_generic_explicit">Doing shit; be patient...</string>
+    <string name="action_export_my_mileage_to_excel">Export to Excel...</string>
+    <string name="export_mileage_disclaimer">This will not create a reimbursement receipt.\n\nThis will instead create something of a deep dive into the data currently being displayed.</string>
+    <string name="export_mileage_disclaimer_explicit">This will not create a fucking reimbursement receipt.\n\nThis will instead create a cool fucking mileage report because why the fuck not.</string>
+    <string name="action_administrative_single_user">Administration</string>
+    <string name="title_activity_select_monitor_pids">Select PID</string>
+    <string name="title_activity_preferences">Preferences</string>
+
     <string name="hello">Hello World, Torque Broadcaster!</string>
     <string name="app_name">Torque PIDcaster</string>
     <string name="title_activity_settings">Settings</string>
@@ -77,10 +306,6 @@
     <string name="pref_title_vibrate">Vibrate</string>
 
     <string name="title_activity_choose_pid">ChoosePidActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
-    <string name="title_activity_select_monitor_pids">SelectMonitorPidsActivity</string>
     <string name="monitor_operators">monitor_operators_values</string>
-    <string name="title_activity_preferences">Settings</string>
+
 </resources>

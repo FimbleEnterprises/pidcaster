@@ -126,6 +126,7 @@ public class MyPidMonitorService extends Service {
                 quitPending = false;
                 nf = NumberFormat.getNumberInstance();
                 bindToTorqueService();
+                Toast.makeText(this, "Starting PIDcaster", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,6 +170,7 @@ public class MyPidMonitorService extends Service {
                 // PluginActivity.btnStartStopService.setBackgroundResource(R.drawable.btn_start_broadcasting);
 
             }
+            Toast.makeText(this, "Stopping PIDcaster", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e(TAG, "onDestroy: ");
             e.printStackTrace();

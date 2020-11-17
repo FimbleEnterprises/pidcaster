@@ -102,6 +102,7 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
             logger = new Logger(this);
         }
 
+        // Torque sends a broadcast when it is quitting properly.  We receive that broadcast here.
         torqueIsQuittingReceiver = new MyTorqueIsQuittingReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -240,6 +241,7 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
             txtServiceStatus.setTextColor(Color.WHITE);
             txtIsConnectedECU.setTextColor(Color.WHITE);
         }
+
     }
 
     private void doBroadcastAnimation() {

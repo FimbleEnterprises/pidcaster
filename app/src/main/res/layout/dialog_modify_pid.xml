@@ -131,6 +131,21 @@
                     android:textColor="#454545"
                     android:textSize="15sp" />
             </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1"
+                android:background="#FFFFFF">
+
+                <ImageButton
+                    android:id="@+id/btnClipboard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/clipboard_icon"
+                    android:scaleType="centerInside" />
+            </FrameLayout>
         </TableRow>
 
 
@@ -181,6 +196,30 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/tableRow_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/editText_threshold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#454545"
+                    android:textSize="15sp" />
+            </FrameLayout>
+        </TableRow>
+
+
+        <TableRow
             android:id="@+id/tableRow_ffdddss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -204,44 +243,7 @@
                     android:textStyle="bold" />
             </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".1"
-                android:background="#FFFFFF">
 
-                <ImageButton
-                    android:id="@+id/btnClipboard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/clipboard_icon"
-                    android:scaleType="centerInside" />
-            </FrameLayout>
-        </TableRow>
-
-
-        <TableRow
-            android:id="@+id/tableRow_6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/editText_threshold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text=""
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#454545"
-                    android:textSize="15sp" />
-            </FrameLayout>
         </TableRow>
 
         <TableRow

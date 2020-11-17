@@ -22,11 +22,16 @@
         android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/imageViewIsMonitored"
         android:layout_toEndOf="@+id/imageViewIsMonitored"/>
+
     <ImageView
+        android:id="@+id/imageViewIsMonitored"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:id="@+id/imageViewIsMonitored"
-        android:visibility="visible" android:src="@mipmap/ic_launcher"
-        android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" android:layout_alignBottom="@+id/textViewMinorText"/>
+        android:layout_alignBottom="@+id/textViewMinorText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/broadcast_indicator3"
+        android:scaleType="fitCenter"
+        android:visibility="visible" />
 </RelativeLayout>
