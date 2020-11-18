@@ -130,7 +130,7 @@
     </style>
 
     <style name="dialog_title_style_orange" parent="android:Widget.TextView">
-        <item name="android:background">@drawable/orangemenuthin</item>
+        <item name="android:background">@drawable/btn_glass_orange_border_white</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">20sp</item>
     </style>

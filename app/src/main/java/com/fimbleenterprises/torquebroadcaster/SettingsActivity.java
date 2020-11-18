@@ -140,7 +140,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void showDefaultPicker() {
         new AlertDialog.Builder(this)
                 .setTitle("Reset Preferences")
-                .setIcon(R.drawable.broadcast_icon128x128)
+                .setIcon(R.mipmap.app_icon)
                 .setMessage("Typically system-wide broadcasts are crafted to be unique since any " +
                         "installed app can see them.  That could make for problems if you make them so " +
                         "generic that your choice conflicts with another app's broadcast.  \n\n" +

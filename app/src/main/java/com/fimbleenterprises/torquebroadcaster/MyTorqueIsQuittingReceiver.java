@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fimbleenterprises.torquebroadcaster.utils.Helpers;
+
 /**
  * Created by Matt on 11/1/2016.
  */
@@ -18,10 +20,14 @@ public class MyTorqueIsQuittingReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        MySettingsHelper options = new MySettingsHelper(context);
         Log.i(TAG, "onReceive: Received master Torque broadcast");
         // MyPidMonitorService.quitPending = true;
         MyApp.TORQUE_IS_RUNNING = false;
-        // context.stopService(new Intent(context, MyPidMonitorService.class));
+        MyPidMonitorService.killReason = "Torque has stopped running";
+        if (options.killWithTorque()) {
+            context.stopService(new Intent(context, MyPidMonitorService.class));
+        }
         Toast.makeText(context, "Torque is quitting was broadcast!", Toast.LENGTH_SHORT).show();
     }
 }

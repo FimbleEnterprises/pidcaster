@@ -29,6 +29,7 @@ public class MySettingsHelper {
     public static final String PREF_KEY_FREQUENCY = "PREF_KEY_FREQUENCY";
     public static final String PREF_KEY_USE_METRIC = "PREF_KEY_USE_METRIC";
     public static final String SELECT_PID_MONITORS = "PREF_KEY_FREQUENCY";
+    public static final String PREF_KILL_WITH_TORQUE = "PREF_KILL_WITH_TORQUE";
 
     private Context context;
     private SharedPreferences prefs;
@@ -85,6 +86,14 @@ public class MySettingsHelper {
 
     public void serviceAllowedToRun(boolean value) {
         prefs.edit().putBoolean(PREF_KEY_SERVICE_CAN_RUN, value).apply();
+    }
+
+    public boolean killWithTorque() {
+        return prefs.getBoolean(PREF_KILL_WITH_TORQUE, true);
+    }
+
+    public void killWithTorque(boolean val) {
+        prefs.edit().putBoolean(PREF_KILL_WITH_TORQUE, val).commit();
     }
 
     public boolean serviceAllowedToRun() {

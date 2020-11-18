@@ -29,9 +29,8 @@ public class MyTorqueIsStartingReceiver extends BroadcastReceiver {
             Log.w(TAG, "onReceive: Received master Torque broadcast for START");
         }
 
-        Intent starter = new Intent(context, MyPidMonitorService.class);
-        starter.putExtra(INTENT_EXTRA_START_SERVICE, true);
-        context.startService(starter);
+        MyPidMonitorService.startService();
+
         Log.w(TAG, "onReceive: SENT START REQUEST FOR SERVICE!");
         MyApp.TORQUE_IS_RUNNING = true;
         Toast.makeText(context, "Torque is started broadcast was received.", Toast.LENGTH_SHORT).show();

@@ -76,6 +76,14 @@
             android:summaryOn="Values are currently using the metric system">
         </CheckBoxPreference>
 
+        <CheckBoxPreference
+            android:key="KILL_WITH_TORQUE"
+            android:title="Stop when Torque stops"
+            android:defaultValue="true"
+            android:summaryOff="PIDcaster will stop when torque stops"
+            android:summaryOn="PIDcaster will keep running.  Fuck all if Torque is running or not.">
+        </CheckBoxPreference>
+
         <Preference
             android:key="PREF_MAKE_SAMPLE_TASKER_PROFILE"
             android:title="Create sample tasker profile"

@@ -139,12 +139,24 @@ public class PreferencesActivity extends PreferenceActivity {
             prefMakeTaskerSample.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    File file = Helpers.Files.writeToFile("sample_tasker_profile.xml", Helpers.Strings.getTaskerSampleProfileString(), context);
-                    Helpers.Files.shareFile(context, file);
-                    return false;
+
+                    if (Helpers.Permissions.isGranted(Helpers.Permissions.PermissionType.WRITE_EXTERNAL_STORAGE)) {
+                        makeTaskerSample();
+                    } else {
+                        Helpers.Permissions permissions = new Helpers.Permissions();
+                        Helpers.Permissions.RequestContainer container = new Helpers.Permissions.RequestContainer();
+                        container.add(Helpers.Permissions.PermissionType.WRITE_EXTERNAL_STORAGE);
+                        getActivity().requestPermissions(container.toArray(), 1);
+                    }
+                    return true;
                 }
             });
 
+        }
+
+        void makeTaskerSample() {
+            File file = Helpers.Files.writeToFile("sample_tasker_profile.xml", Helpers.Strings.getTaskerSampleProfileString(), context);
+            Helpers.Files.shareFile(context, file);
         }
 
         @Override
@@ -196,7 +208,7 @@ public class PreferencesActivity extends PreferenceActivity {
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setIcon(R.drawable.broadcast_icon128x128);
+            actionBar.setIcon(R.mipmap.app_icon);
             actionBar.setDisplayShowTitleEnabled(true);
         }
     }

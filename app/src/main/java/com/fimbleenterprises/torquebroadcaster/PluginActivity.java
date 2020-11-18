@@ -42,7 +42,7 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
     public MyInternalReceiver receiver;
     public MyTorqueIsQuittingReceiver torqueIsQuittingReceiver;
     public static boolean autoScrollingEnabled;
-    public static MyPidMonitorService pidMonitorService;
+    // public static MyPidMonitorService pidMonitorService;
     public static TextView txtPidName;
     public static TextView txtServiceStatus;
     public static TextView txtPidValue;
@@ -181,10 +181,6 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
                 startActivity(intent);
             }
         });
-
-        if (pidMonitorService == null && ! quitRequested) {
-            pidMonitorService = new MyPidMonitorService();
-        }
 
         if (txtLog.length() < 1) {
             txtLog.setText("Talking to broadcaster, please wait...");
@@ -522,22 +518,6 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
         }
     }
 
-    public void startService() {
-
-        if (quitRequested) {
-            return;
-        }
-
-        if (pidMonitorService == null) {
-            pidMonitorService = new MyPidMonitorService();
-        }
-        if (! MyPidMonitorService.quitPending) {
-            Intent intent = new Intent(getApplicationContext(), MyPidMonitorService.class);
-            intent.putExtra(MyPidMonitorService.INTENT_EXTRA_START_SERVICE,true);
-            startService(intent);
-        }
-    }
-
     public void startStopService(boolean startStop) {
 
         if (quitRequested) {
@@ -550,14 +530,14 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
             if (btnStartStopService != null) {
                 btnStartStopService.setText("Stopping...");
             }
-            pidMonitorService.stop();
+            stopService(new Intent(getApplicationContext(), MyPidMonitorService.class));
         } else {
             Toast.makeText(getApplicationContext(), "Starting broadcaster...", Toast.LENGTH_SHORT).show();
             options.serviceAllowedToRun(true);
             if (btnStartStopService != null) {
                 btnStartStopService.setText("Starting...");
             }
-            startService();
+            MyPidMonitorService.startService();
         }
     }
 
@@ -573,7 +553,7 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
                 btnStartStopService.setText("Stopping...");
             }
             options.serviceAllowedToRun(false);
-            pidMonitorService.stop();
+            stopService(new Intent(getApplicationContext(), MyPidMonitorService.class));
             unregisterReceiver(receiver);
         } else {
             Toast.makeText(getApplicationContext(), "Starting broadcaster...", Toast.LENGTH_SHORT).show();
@@ -581,7 +561,7 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
                 btnStartStopService.setText("Starting...");
             }
             options.serviceAllowedToRun(true);
-            startService();
+            MyPidMonitorService.startService();
             registerReceiver(receiver, MyInternalReceiver.intentFilter);
         }
     }

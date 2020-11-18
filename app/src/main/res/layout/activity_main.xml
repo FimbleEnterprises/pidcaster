@@ -86,7 +86,7 @@
         android:layout_above="@+id/buttonPrefs"
         android:layout_alignParentLeft="true"
         android:focusable="false" android:focusableInTouchMode="true"
-        android:background="@drawable/yellow_square_border" android:padding="10dp"
+        android:background="@drawable/btn_glass_orange_border_white" android:padding="10dp"
         android:layout_below="@+id/textView_serviceStatus" android:layout_marginTop="10dp">
 
         <TextView
@@ -115,7 +115,7 @@
         android:background="@drawable/btn_glass_gray"/>
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" app:srcCompat="@drawable/broadcast_indicator3"
+        android:layout_height="wrap_content" app:srcCompat="@drawable/alert"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" android:id="@+id/imageViewSending"
         android:layout_above="@+id/SCROLLER_ID"

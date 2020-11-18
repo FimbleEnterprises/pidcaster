@@ -263,83 +263,6 @@ public abstract class Helpers {
             return outputFile;
         }
 
-        public static int returnProperIconResource(String fileName, int defaultResource, Context context) {
-            int icon = 0;
-
-            String extension = "";
-
-            try {
-                fileName = fileName.toLowerCase();
-                int lastPeriod = fileName.lastIndexOf(".");
-                extension = fileName.substring(lastPeriod);
-                extension = extension.toLowerCase();
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            if (extension.equals(".pdf")) {
-                icon = R.drawable.pdficon64x64;
-            }else if (extension.equals(".txt")) {
-                icon = R.drawable.text_doc_icon;
-            }else if (extension.equals(".mpg")) {
-                icon = R.drawable.movieicon64x64;
-            }else if (extension.equals(".avi")) {
-                icon = R.drawable.movieicon64x64;
-            }else if (extension.equals(".mp4")) {
-                icon = R.drawable.movieicon64x64;
-            }else if (extension.equals(".mpeg")) {
-                icon = R.drawable.movieicon64x64;
-            }else if (extension.equals(".wmv")) {
-                icon = R.drawable.movieicon64x64;
-            }else if (extension.equals(".doc")) {
-                icon = R.drawable.worddocument64x64;
-            }else if (extension.equals(".docx")) {
-                icon = R.drawable.worddocument64x64;
-            }else if (extension.equals(".dotx")) {
-                icon = R.drawable.worddocument64x64;
-            }else if (extension.equals(".xls")) {
-                icon = R.drawable.exceldocumenticon64x64;
-            }else if (extension.equals(".xlsx")) {
-                icon = R.drawable.exceldocumenticon64x64;
-            }else if (extension.equals(".ppt")) {
-                icon = R.drawable.powerpointicon64x64;
-            }else if (extension.equals(".pptx")) {
-                icon = R.drawable.powerpointicon64x64;
-            }else if (extension.equals(".potx")) {
-                icon = R.drawable.powerpointicon64x64;
-            }else if (extension.equals(".png")) {
-                icon = R.drawable.image_attachment_icon;
-            }else if (extension.equals(".bmp")) {
-                icon = R.drawable.image_attachment_icon;
-            }else if (extension.equals(".tff")) {
-                icon = R.drawable.image_attachment_icon;
-            }else if (extension.equals(".tiff")) {
-                icon = R.drawable.image_attachment_icon;
-            }else if (extension.equals(".tif")) {
-                icon = R.drawable.image_attachment_icon;
-            }else if (extension.equals(".gif")) {
-                icon = R.drawable.image_attachment_icon;
-            }else if (extension.equals(".jpeg")) {
-                icon = R.drawable.image_attachment_icon;
-            }else if (extension.equals(".jpg")) {
-                icon = R.drawable.image_attachment_icon;
-            }else if (extension.equals(".rar")) {
-                icon = R.drawable.raricon64x64;
-            }else if (extension.equals(".zip")) {
-                icon = R.drawable.zipicon64x64;
-            }else if (extension.equals(".msg")) {
-                icon = R.drawable.icon_email;
-            }else if (extension.equals(".db")) {
-                icon = R.drawable.db_icon;
-            }else {
-                icon = defaultResource;
-            }
-
-
-            return icon;
-        }
-
         /**
          * Converts any view to a bitmap.
          */
@@ -411,24 +334,18 @@ public abstract class Helpers {
 
     public static class Notifications {
 
-        public String NOTIFICATION_CHANNEL = "MILEBUDDY_DEFAULT_CHANNEL";
-        Context context;
-        NotificationManager notificationManager;
-        Notification notification;
+        public static final String NOTIFICATION_CHANNEL = "PIDCASTER_DEFAULT_CHANNEL";
+        public static NotificationManager notificationManager;
+        private static Notification notification;
         public static final int START_ID = 1;
 
-        public Notifications(Context context) {
-            this.context = context;
-            notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-
-        }
-
-
-        public void create(String title, String text, boolean showProgress){
+        public static Notification create(Context context, String title, String text, boolean showProgress){
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
                 ((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(
-                        new NotificationChannel(NOTIFICATION_CHANNEL,NOTIFICATION_SERVICE,NotificationManager.IMPORTANCE_HIGH));
+                        new NotificationChannel(NOTIFICATION_CHANNEL,NOTIFICATION_SERVICE,NotificationManager.IMPORTANCE_DEFAULT));
             }
+
+            notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 
             Intent newIntent = new Intent();
 
@@ -447,10 +364,14 @@ public abstract class Helpers {
                     .setOngoing(false)
                     .setStyle(style)
                     .setProgress(0,0,showProgress)
-                    .setSmallIcon(R.drawable.notification_small_car)
+                    .setSmallIcon(R.mipmap.app_icon)
                     .setContentIntent(contentIntent)
-                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.car2_static_round_tparent_icon))
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.app_icon))
                     .build();
+
+            notificationManager.notify(START_ID, notification);
+
+            return notification;
         }
 
         public void setAutoCancel(int delayInMs) {
@@ -1958,7 +1879,8 @@ public abstract class Helpers {
 
             if(fileWithinMyDir.exists()) {
                 intentShareFile.setType(getMimetype(file));
-                intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+file));
+                Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+                intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
 
                 intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
                         "Sharing File...");
@@ -2636,7 +2558,7 @@ public abstract class Helpers {
         /**
          * An enumeration of permission names to (more easily) enable strongly typed permission handling
          */
-        enum PermissionType {
+        public enum PermissionType {
             ACCEPT_HANDOVER,
             ACCESS_BACKGROUND_LOCATION,
             ACCESS_CHECKIN_PROPERTIES,
