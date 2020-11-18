@@ -107,8 +107,9 @@ public class PluginActivity extends AppCompatActivity implements GestureDetector
             @Override
             public void onReceive(Context context, Intent intent) {
                 super.onReceive(context, intent);
-                MyPidMonitorService.quitPending = true;
-                stopService(new Intent(getApplicationContext(), MyPidMonitorService.class));
+                // MyPidMonitorService.quitPending = true;
+                // stopService(new Intent(getApplicationContext(), MyPidMonitorService.class));
+                Toast.makeText(context, "Torque is quitting broadcast received in activity", Toast.LENGTH_SHORT).show();
             }
         };
         receiver = new MyInternalReceiver() {

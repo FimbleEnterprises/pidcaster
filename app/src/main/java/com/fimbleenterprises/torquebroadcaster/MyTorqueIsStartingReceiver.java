@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
+import android.widget.Toast;
 
 import static com.fimbleenterprises.torquebroadcaster.MyPidMonitorService.INTENT_EXTRA_START_SERVICE;
 
@@ -33,5 +34,6 @@ public class MyTorqueIsStartingReceiver extends BroadcastReceiver {
         context.startService(starter);
         Log.w(TAG, "onReceive: SENT START REQUEST FOR SERVICE!");
         MyApp.TORQUE_IS_RUNNING = true;
+        Toast.makeText(context, "Torque is started broadcast was received.", Toast.LENGTH_SHORT).show();
     }
 }
