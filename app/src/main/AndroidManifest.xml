@@ -71,7 +71,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_select_monitor_pids"
             android:parentActivityName=".PluginActivity"
-            android:theme="@style/Theme.Design.Light">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fimbleenterprises.torquebroadcaster.PluginActivity"/>

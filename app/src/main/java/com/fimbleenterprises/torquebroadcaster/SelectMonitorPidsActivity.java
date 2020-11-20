@@ -16,6 +16,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +42,8 @@ import org.prowl.torque.remote.ITorqueService;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
 import static com.fimbleenterprises.torquebroadcaster.MyPidMonitorService.TAG;
@@ -49,7 +54,7 @@ import static com.fimbleenterprises.torquebroadcaster.MyPidMonitorService.torque
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class SelectMonitorPidsActivity extends ListActivity {
+public class SelectMonitorPidsActivity extends AppCompatActivity {
 
     MySettingsHelper options;
     SharedPreferences prefs;
@@ -130,7 +135,7 @@ public class SelectMonitorPidsActivity extends ListActivity {
 
         this.options = new MySettingsHelper(getApplicationContext());
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        ActionBar actionBar = getActionBar();
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -153,6 +158,40 @@ public class SelectMonitorPidsActivity extends ListActivity {
         });*/
         dynamicallyUpdatedPids = new ArrayList<>();
         buildListView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.select_pids, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.home :
+                NavUtils.navigateUpFromSameTask(this);
+                break;
+
+
+            case R.id.action_deselect_all :
+                for (MyPID pid : allMyPIDs) {
+                    pid.stopMonitoring();
+                }
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -203,17 +242,6 @@ public class SelectMonitorPidsActivity extends ListActivity {
         delayedHide(100);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button.
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void toggle() {
         if (mVisible) {
             hide();
@@ -258,7 +286,7 @@ public class SelectMonitorPidsActivity extends ListActivity {
     }
 
     private void buildListView() {
-        listView = getListView();
+        listView = findViewById(R.id.pid_list);
 
         if (MyPidMonitorService.allMyPIDs == null) {
             Toast.makeText(getApplicationContext(), "Service must be running", Toast.LENGTH_LONG).show();
@@ -300,6 +328,12 @@ public class SelectMonitorPidsActivity extends ListActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final MyPID chosenPid = MyPidMonitorService.allMyPIDs.get(position);
+
+                if (!chosenPid.isEnabled) {
+                    chosenPid.stopMonitoring();
+                    return false;
+                }
+
                 if ( ! chosenPid.isMonitored(options.getSharedPrefs())) {
                     chosenPid.operator = MyPID.AlarmOperator.SEND_ALWAYS;
                     chosenPid.threshold = 0f;
@@ -319,6 +353,159 @@ public class SelectMonitorPidsActivity extends ListActivity {
                 return true;
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                final MyPID chosenPid = MyPidMonitorService.allMyPIDs.get(position);
+                final String[] operators = getResources().getStringArray(R.array.pid_monitor_operators);
+                // custom dialogd
+                final Dialog dialog = new Dialog(getApplicationContext());
+                View layout = dialog.getLayoutInflater().inflate(R.layout.dialog_modify_pid, null);
+
+                final TextView txtPidBeingMonitored = (TextView) layout.findViewById(R.id.textViewPidBeingEdited);
+                txtPidBeingMonitored.setText(chosenPid.fullName);
+                dialog.setContentView(layout);
+
+                final TextView txtBroadcastAction = (TextView) layout.findViewById(R.id.textViewBroadcastAction);
+                final EditText editTextBroadcastAction = (EditText) layout.findViewById(R.id.editText_broadcastAction);
+
+                editTextBroadcastAction.setText(new String(chosenPid.fullName + "_TORQUE").toLowerCase().replace(" ", "_"));
+                editTextBroadcastAction.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        return false;
+                    }
+                });
+                final Spinner spinnerOperator = layout.findViewById(R.id.spinner_operator);
+                spinnerOperator.requestFocus();
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_spinner_item, operators);
+                spinnerOperator.setAdapter(adapter);
+                if (chosenPid.isMonitored(prefs)) {
+                    int itemInt;
+                    switch (chosenPid.operator) {
+                        case SEND_ALWAYS:
+                            itemInt = 0;
+                            break;
+                        case LESS_THAN:
+                            itemInt = 1;
+                            break;
+                        case GREATER_THAN:
+                            itemInt = 2;
+                            break;
+                        case EQUALS:
+                            itemInt = 3;
+                            break;
+                        case NOT_EQUALS:
+                            itemInt = 4;
+                            break;
+                        default:
+                            itemInt = 0;
+                    }
+                    spinnerOperator.setSelection(itemInt);
+                }
+                spinnerOperator.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String[] operators = getResources().getStringArray(R.array.pid_monitor_operators);
+                        MyPID.AlarmOperator operator;
+                        float threshold = 0;
+                        switch (position) {
+                            case 0:
+                                operator = MyPID.AlarmOperator.SEND_ALWAYS;
+                                break;
+                            case 1:
+                                operator = MyPID.AlarmOperator.LESS_THAN;
+                                break;
+                            case 2:
+                                operator = MyPID.AlarmOperator.GREATER_THAN;
+                                break;
+                            case 3:
+                                operator = MyPID.AlarmOperator.EQUALS;
+                                break;
+                            case 4:
+                                operator = MyPID.AlarmOperator.NOT_EQUALS;
+                                break;
+                            default:
+                                operator = MyPID.AlarmOperator.SEND_ALWAYS;
+                        }
+                        chosenPid.operator = operator;
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                final EditText editTextThreshold = (EditText) layout.findViewById(R.id.editText_threshold);
+                editTextThreshold.setSelectAllOnFocus(true);
+                final Button btnCommit = (Button) layout.findViewById(R.id.btnCommitParams);
+                if (chosenPid.isMonitored(prefs)) {
+                    editTextThreshold.setText(String.valueOf(chosenPid.threshold));
+                    editTextBroadcastAction.setText(new String(chosenPid.broadcastAction).replace(" ", "_"));
+                } else {
+                    editTextThreshold.setText(String.valueOf(0));
+                }
+
+                dialog.setTitle("Choose Monitor Parameters");
+                dialog.setCancelable(true);
+                btnCommit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        chosenPid.threshold = Float.parseFloat(editTextThreshold.getText().toString());
+                        chosenPid.broadcastAction = editTextBroadcastAction.getText().toString().toLowerCase();
+                        dialog.dismiss();
+                        chosenPid.monitor(options.getSharedPrefs());
+                        setResult(PreferencesActivity.RESULT_NEED_RESTART);
+                        Toast.makeText(getApplicationContext(), "PID now monitored",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                final Button btnRemoveMonitor = (Button) layout.findViewById(R.id.btnRemoveMonitor);
+                btnRemoveMonitor.setEnabled(chosenPid.isMonitored(prefs));
+                btnRemoveMonitor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        chosenPid.stopMonitoring();
+                        setResult(PreferencesActivity.RESULT_NEED_RESTART);
+                        Toast.makeText(getApplicationContext(), "PID monitor removed.",
+                                Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            dialog.dismiss();
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                });
+
+                ImageButton btnClip = layout.findViewById(R.id.btnClipboard);
+                btnClip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("pidcaster", "%" + editTextBroadcastAction.getText());
+                        clipboard.setPrimaryClip(clip);
+                        Toast.makeText(getApplicationContext(), "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                if (chosenPid.isEnabled) {
+                    dialog.show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "PID not available", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public boolean alreadyAdded(String fullName) {
@@ -328,154 +515,6 @@ public class SelectMonitorPidsActivity extends ListActivity {
             }
         }
         return false;
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        final MyPID chosenPid = MyPidMonitorService.allMyPIDs.get(position);
-        final String[] operators = getResources().getStringArray(R.array.pid_monitor_operators);
-        // custom dialogd
-        final Dialog dialog = new Dialog(this);
-        View layout = dialog.getLayoutInflater().inflate(R.layout.dialog_modify_pid, null);
-
-        final TextView txtPidBeingMonitored = (TextView) layout.findViewById(R.id.textViewPidBeingEdited);
-        txtPidBeingMonitored.setText(chosenPid.fullName);
-        dialog.setContentView(layout);
-
-        final TextView txtBroadcastAction = (TextView) layout.findViewById(R.id.textViewBroadcastAction);
-        final EditText editTextBroadcastAction = (EditText) layout.findViewById(R.id.editText_broadcastAction);
-        final TextView txtVarName = layout.findViewById(R.id.textView_varname);
-        editTextBroadcastAction.setText(new String(chosenPid.fullName + "_TORQUE").toLowerCase().replace(" ", "_"));
-        editTextBroadcastAction.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return false;
-            }
-        });
-        final Spinner spinnerOperator = layout.findViewById(R.id.spinner_operator);
-        spinnerOperator.requestFocus();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, operators);
-        spinnerOperator.setAdapter(adapter);
-        if (chosenPid.isMonitored(prefs)) {
-            int itemInt;
-            switch (chosenPid.operator) {
-                case SEND_ALWAYS:
-                    itemInt = 0;
-                    break;
-                case LESS_THAN:
-                    itemInt = 1;
-                    break;
-                case GREATER_THAN:
-                    itemInt = 2;
-                    break;
-                case EQUALS:
-                    itemInt = 3;
-                    break;
-                case NOT_EQUALS:
-                    itemInt = 4;
-                    break;
-                default:
-                    itemInt = 0;
-            }
-            spinnerOperator.setSelection(itemInt);
-        }
-        spinnerOperator.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] operators = getResources().getStringArray(R.array.pid_monitor_operators);
-                MyPID.AlarmOperator operator;
-                float threshold = 0;
-                switch (position) {
-                    case 0:
-                        operator = MyPID.AlarmOperator.SEND_ALWAYS;
-                        break;
-                    case 1:
-                        operator = MyPID.AlarmOperator.LESS_THAN;
-                        break;
-                    case 2:
-                        operator = MyPID.AlarmOperator.GREATER_THAN;
-                        break;
-                    case 3:
-                        operator = MyPID.AlarmOperator.EQUALS;
-                        break;
-                    case 4:
-                        operator = MyPID.AlarmOperator.NOT_EQUALS;
-                        break;
-                    default:
-                        operator = MyPID.AlarmOperator.SEND_ALWAYS;
-                }
-                chosenPid.operator = operator;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        final EditText editTextThreshold = (EditText) layout.findViewById(R.id.editText_threshold);
-        editTextThreshold.setSelectAllOnFocus(true);
-        final Button btnCommit = (Button) layout.findViewById(R.id.btnCommitParams);
-        if (chosenPid.isMonitored(prefs)) {
-            editTextThreshold.setText(String.valueOf(chosenPid.threshold));
-            editTextBroadcastAction.setText(new String(chosenPid.broadcastAction).replace(" ", "_"));
-        } else {
-            editTextThreshold.setText(String.valueOf(0));
-        }
-
-        dialog.setTitle("Choose Monitor Parameters");
-        dialog.setCancelable(true);
-        btnCommit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chosenPid.threshold = Float.parseFloat(editTextThreshold.getText().toString());
-                chosenPid.broadcastAction = editTextBroadcastAction.getText().toString().toLowerCase();
-                dialog.dismiss();
-                chosenPid.monitor(options.getSharedPrefs());
-                setResult(PreferencesActivity.RESULT_NEED_RESTART);
-                Toast.makeText(getApplicationContext(), "PID now monitored",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        final Button btnRemoveMonitor = (Button) layout.findViewById(R.id.btnRemoveMonitor);
-        btnRemoveMonitor.setEnabled(chosenPid.isMonitored(prefs));
-        btnRemoveMonitor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chosenPid.stopMonitoring();
-                setResult(PreferencesActivity.RESULT_NEED_RESTART);
-                Toast.makeText(getApplicationContext(), "PID monitor removed.",
-                        Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-        txtVarName.setText("%" + editTextBroadcastAction.getText());
-        ImageButton btnClip = layout.findViewById(R.id.btnClipboard);
-        btnClip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("pidcaster", "%" + editTextBroadcastAction.getText());
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getApplicationContext(), "Copied to clipboard", Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog.show();
-
     }
 
     public class MyPidAdapter extends ArrayAdapter {
@@ -528,10 +567,12 @@ public class SelectMonitorPidsActivity extends ListActivity {
                 TextView tvMain = (TextView)row.findViewById(R.id.textViewMainText);
                 TextView tvMinor = (TextView)row.findViewById(R.id.textViewMinorText);
                 ImageView imgIsMonitored = (ImageView)row.findViewById(R.id.imageViewIsMonitored);
+                RelativeLayout layout = row.findViewById(R.id.rowcontainer);
 
                 holder.tvMain = tvMain;
                 holder.tvMinor = tvMinor;
                 holder.imgViewIsMonitored = imgIsMonitored;
+                holder.layout = layout;
 
                 row.setTag(holder);
             }
@@ -545,9 +586,15 @@ public class SelectMonitorPidsActivity extends ListActivity {
             holder.tvMinor.setText("Last value: " + myPID.getRawValue());
 
             if (isEcuSupported(myPID.getRawPidID())) {
-                row.setBackgroundColor(dkGreen);
+                row.setBackgroundResource(R.drawable.btn_glass_gray_orange_border);
+                row.setEnabled(true);
+                myPID.isEnabled = true;
+                //row.setBackgroundColor(dkGreen);
             } else {
-                row.setBackgroundColor(dkRed);
+                row.setBackgroundResource(R.drawable.btn_glass_gray_orange_border);
+                row.setEnabled(false);
+                myPID.isEnabled = false;
+                //row.setBackgroundColor(dkRed);
             }
 
             if (myPID.isMonitored(options.getSharedPrefs())) {
@@ -573,6 +620,7 @@ public class SelectMonitorPidsActivity extends ListActivity {
             TextView tvMain;
             TextView tvMinor;
             ImageView imgViewIsMonitored;
+            RelativeLayout layout;
         }
     }
 

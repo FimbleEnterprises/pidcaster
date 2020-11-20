@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
     <TableLayout
         android:id="@+id/tableLayout_1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="#FFFFFF"
         android:paddingTop="2dp"
         android:paddingBottom="2dp">
 
@@ -177,20 +175,17 @@
         <TableRow
             android:id="@+id/tableRow_dfffff"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#FFFFFF">
+                android:layout_weight="1">
 
                 <Spinner
                     android:id="@+id/spinner_operator"
                     android:layout_width="match_parent"
                     android:layout_height="55sp"
-                    android:background="#FFFFFF"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
         </TableRow>
@@ -218,33 +213,6 @@
             </FrameLayout>
         </TableRow>
 
-
-        <TableRow
-            android:id="@+id/tableRow_ffdddss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".9">
-
-                <TextView
-                    android:id="@+id/textView_varname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:gravity="left"
-                    android:text=""
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#454545"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </FrameLayout>
-
-
-        </TableRow>
 
         <TableRow
             android:id="@+id/tableRow_7"

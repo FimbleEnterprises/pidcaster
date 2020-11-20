@@ -38,6 +38,7 @@ public class MyPID {
     private long lastUpdatedInMS;
     private static SharedPreferences prefs;
     private String isActive;
+    public boolean isEnabled = true;
 
     /***************************************/
     /********* ALARM PROPERTIES ************/

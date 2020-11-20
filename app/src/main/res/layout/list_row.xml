@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/btn_glass_gray_black_border">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rowcontainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/btn_glass_gray"
+    android:padding="5dp">
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/textViewMainText"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/imageViewIsMonitored"
-        android:layout_toRightOf="@+id/imageViewIsMonitored"/>
-    <TextView
-        android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewMinorText"
-        android:layout_below="@+id/textViewMainText"
-        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/imageViewIsMonitored"
         android:layout_toRightOf="@+id/imageViewIsMonitored"
-        android:layout_toEndOf="@+id/imageViewIsMonitored"/>
+        android:fontFamily="@font/casual"
+        android:text="TextView"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewMinorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewMainText"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/imageViewIsMonitored"
+        android:layout_toRightOf="@+id/imageViewIsMonitored"
+        android:fontFamily="@font/casual"
+        android:text="TextView"
+        android:textColor="@color/colorAccent" />
 
     <ImageView
         android:id="@+id/imageViewIsMonitored"
